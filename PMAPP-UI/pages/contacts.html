@@ -1,0 +1,43 @@
+
+ <center><h1>Contacts List</h1></center>
+
+         <a class="waves-effect  green lighten-1 btn" ng-click="contactsCtrl.addContact()" >Add Contacts</a>
+
+ <div ng-cloak style="align-content: center">
+
+
+    <!--<div  id="chat-list" style="height:300px;overflow:auto">-->
+    <div>
+        <!-- Here come the messages in the chat, each one presented in card -->
+        <div ng-repeat="m in contactsCtrl.contactsList">
+            <!-- This card prodives space for the message and Like/dislike buttons -->
+            <div class="row">
+                <div class="col s12 m6">
+                    <div class="card" >
+                        <div class="card-content" >
+                            <!-- Card Title is the person who write the message -->
+
+                            <!-- Here comes the message text -->
+                            <p>
+                              {{m.first_name}}  {{m.last_name}}
+                            </p>
+
+                             <p>
+                              id:  {{m.uid}}
+                            </p>
+                        </div>
+                        <div class="card-action">
+                            <a class="btn-floating btn-small waves-effect waves-light red" ng-click="contactsCtrl.userDetails(m.uid)"><i class="material-icons">info
+                            </i></a>
+
+                            
+                            </i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

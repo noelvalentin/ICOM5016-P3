@@ -1,0 +1,43 @@
+
+ <center><h1>Users Who Liked this Message</h1></center>
+
+ <div ng-cloak style="align-content: center">
+
+
+    <!--<div  id="chat-list" style="height:300px;overflow:auto">-->
+    <div>
+        <!-- Here come the messages in the chat, each one presented in card -->
+        <div ng-repeat="m in likesCtrl.mLikes">
+            <!-- This card prodives space for the message and Like/dislike buttons -->
+            <div class="row">
+                <div class="col s12 m6">
+                    <div class="card">
+                        <div class="card-content">
+                            <!-- Card Title is the person who write the message -->
+
+                            <!-- Here comes the message text -->
+                            <p>
+
+                              {{m.first_name}}  {{m.last_name}}
+                            </p>
+
+                             <p>
+                              id:  {{m.uid}}
+                            </p>
+                            <p  align="right" >
+                                 <a class="btn-floating btn-small waves-effect waves-light blue" ng-click="likesCtrl.userContacts(m.uid)"><i class="material-icons">people
+                            </i></a>
+                             <a  class="btn-floating btn-small waves-effect waves-light red" ng-click="likesCtrl.userDetails(m.uid)"><i class="material-icons">info
+                             </i></a> </p>
+                        </div>
+                        <div class="card-action">
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

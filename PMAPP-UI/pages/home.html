@@ -1,0 +1,76 @@
+
+<h5 ><center>Home Page</center></h5>
+<center><img src="static/pj.jpg" width="830" height="335"></center>
+ <aside>
+
+     <center><h5>Dash Board</h5></center>
+     <center><h1> Welcome: {{homeCtrl.nombre}} {{homeCtrl.apellido}}</h1></center>
+     <ul>
+         <center><a class="waves-effect  blue lighten-1 btn-small" ng-click="homeCtrl.viewGroups()">Groups</a>
+         <a class="waves-effect  blue lighten-1 btn-small" ng-click="homeCtrl.userContacts()">Contacts</a>
+         <a class="waves-effect  blue lighten-1 btn-small" ng-click="homeCtrl.viewChats()">Messages</a></center>
+
+     </ul>
+
+
+ </aside>
+<div ng-cloak style="align-content: center">
+
+
+    <!--<div  id="chat-list" style="height:300px;overflow:auto">-->
+    <div>
+        <!-- Here come the messages in the chat, each one presented in card -->
+
+        <div>
+            <!-- This card prodives space for the message and Like/dislike buttons -->
+            <div class="row">
+                <div class="col s12 m6">
+                    <div class="card">
+                        <div class="card-content">
+                            <!-- Card Title is the person who write the message -->
+
+                            <!-- Here comes the message text -->
+                            <p>
+
+                                TRENDING TOPICS:
+                            </p>
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     <div>
+        <!-- Here come the messages in the chat, each one presented in card -->
+
+        <div>
+            <!-- This card prodives space for the message and Like/dislike buttons -->
+            <div class="row">
+                <div class="col s12 m6">
+                    <div class="card">
+                        <div class="card-content">
+                            <!-- Card Title is the person who write the message -->
+
+                            <!-- Here comes the message text -->
+                            <p>
+
+                                TOTAL POSTS PER DAY: {{homeCtrl.postCounter.number_of_reactions}}
+                            </p>
+                             <!--p ng-repeat="t in homeCtrl."-->
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--</body>-->
+<!--</html>-->

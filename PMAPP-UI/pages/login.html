@@ -1,0 +1,17 @@
+
+    <center><h2>Login</h2></center>
+    <form  action="login.html" method=POST">
+        <div > <label> Email</label>
+        <input  type="email" ng-model="loginCtrl.email" placeholder="example@domain.com"></div>
+   <div> <label> Password</label>
+        <input type="password" ng-model="loginCtrl.password"></div>
+
+
+        <center><a class="waves-effect  green lighten-1 btn-small" ng-click="loginCtrl.userLogin()">Login</a></center>
+        <br>
+        <center><p >Dont have an account? Sign Up</p></center>
+        <center><a class="waves-effect white btn-block" ng-click="loginCtrl.signUp()">Sign Up</a> </center>
+    </form>
+    <div>
+        <a class="waves-effect  red lighten-1 btn-small" ng-click="loginCtrl.login()" >OVERWRITE!!</a>
+</div>

@@ -1,0 +1,45 @@
+
+
+<div ng-cloak style="align-content: center">
+    <div class="row">
+        <div class="col s12 m6">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">Create Account</span>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>Email: </th>
+                                <th><input type="email" ng-model="signUpCtrl.email"></th>
+                            </tr>
+                            <tr>
+                                <th>Password: </th>
+                                <th><input type="password" ng-model="signUpCtrl.password"></th>
+                            </tr>
+                            <tr>
+                                <th>First Name: </th>
+                                <th><input ng-model="signUpCtrl.first_name"></th>
+                            </tr>
+                            <tr>
+                                <th>Last Name: </th>
+                                <th><input ng-model="signUpCtrl.last_name"></th>
+                            </tr>
+                            <tr>
+                                <th>Phone: </th>
+                                <th><input ng-model="signUpCtrl.phone"></th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-action">
+
+                    &nbsp; &nbsp;
+                    <a class="waves-effect  red lighten-1 btn-small" ng-click="signUpCtrl.createUser()">Create</a>
+
+                     <a class="waves-effect  grey btn-small" href="#/login">Exit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

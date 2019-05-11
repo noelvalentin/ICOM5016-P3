@@ -1,0 +1,37 @@
+<center><h2>Groups</h2></center>
+
+<div ng-cloak style="align-content: center">
+
+
+    <!--<div  id="chat-list" style="height:300px;overflow:auto">-->
+    <div>
+        <div align="right">         <a  class="waves-effect  green lighten-2 btn-small" ng-click="groupsCtrl.createGroup()" >Create Group</a>
+ </div>
+        <!-- Here come the messages in the chat, each one presented in card -->
+        <div ng-repeat="m in groupsCtrl.groupList">
+            <!-- This card prodives space for the message and Like/dislike buttons -->
+            <div class="row">
+                <div class="col s12 m6">
+                    <div class="card">
+                        <div class="card-content">
+                            <!-- Card Title is the person who write the message -->
+                            <span class="card-title">{{m.gname}}</span>
+                            <!-- Here comes the message text -->
+                            <p>
+                               Group Owner: {{m.first_name}}
+                            </p>
+                        </div>
+                        <div class="card-action">
+
+                            <a class="btn-floating btn-small waves-effect waves-light blue" ng-click="groupsCtrl.viewMBG(m.gid)"><i class="material-icons">message
+                            </i></a>
+
+                             <a class="btn-floating btn-small waves-effect waves-light blue" ng-click="groupsCtrl.viewMembers(m.gid)"><i class="material-icons">people
+                            </i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
