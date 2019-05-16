@@ -12,10 +12,14 @@
             templateUrl: 'pages/sign-up.html',
            controller: 'SignUpController',
            controllerAs : 'signUpCtrl'
-        }).when('/chat', {
+        }).when('/chat/:oid', {
             templateUrl: 'pages/chat.html',
             controller: 'ChatController',
             controllerAs : 'chatCtrl'
+        }).when('/addMember/:gid', {
+            templateUrl: 'pages/addMember.html',
+            controller: 'AddMemberController',
+            controllerAs : 'addMemberCtrl'
         }).when('/home', {
 
            controller: 'HomeController',

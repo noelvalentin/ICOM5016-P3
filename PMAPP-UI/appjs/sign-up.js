@@ -45,7 +45,7 @@ angular.module('PMAPP').controller('SignUpController', ['$http', '$log', '$scope
                     console.log("data: " + JSON.stringify(response.data));
                     // tira un mensaje en un alert
                     alert("New user added with id: " + response.data.User);
-                    $location.url('/users');
+                    $location.url('/login');
                 }, //Error function
                 function (response) {
                     // This is the error function
@@ -75,6 +75,11 @@ angular.module('PMAPP').controller('SignUpController', ['$http', '$log', '$scope
         this.viewChats = function(){
             $location.url('/chat');
         };
+
+        this.exit=function () {
+            $location.url('/login');
+
+        }
 
 
 

@@ -3,11 +3,16 @@ angular.module('PMAPP').controller('HomeController', ['$http', '$log', '$scope',
     function($http, $log, $scope, $rootScope, $location) {
         var thisCtrl = this;
 
-        this.trendingHash = [];
+        this.stats = [];
         this.uid=window.person;
         this.nombre = "";
         this.apellido="";
         this.postCounter= [];
+        this.hashtags=[];
+        this.lperday=[];
+        this.dperday=[];
+        this.rperday=[];
+
         $rootScope.prueba = "";
 
 
@@ -61,7 +66,7 @@ angular.module('PMAPP').controller('HomeController', ['$http', '$log', '$scope',
             $log.error("Parts Loaded: ", JSON.stringify(thisCtrl.partList));
         };
 
-        this.trending = function(){
+        this.stats = function(){
             // Get the list of parts from the servers via REST API
 
             // First set up the url for the route
@@ -77,8 +82,52 @@ angular.module('PMAPP').controller('HomeController', ['$http', '$log', '$scope',
 
                     console.log("response: " + JSON.stringify(response));
 
-                    thisCtrl.postCounter = response.data.Number;
-                    $rootScope.prueba = "Proando";
+                    thisCtrl.stats = response.data.Messages;
+                    //$rootScope.prueba = "Proando";
+            }, // error callback
+            function (response){
+                // This is the error function
+                // If we get here, some error occurred.
+                // Verify which was the cause and show an alert.
+                console.log("Err response: " + JSON.stringify(response));
+
+                var status = response.status;
+                if (status == 0){
+                    alert("No hay conexion a Internet");
+                }
+                else if (status == 401){
+                    alert("Su sesion expiro. Conectese de nuevo.");
+                }
+                else if (status == 403){
+                    alert("No esta autorizado a usar el sistema.");
+                }
+                else if (status == 404){
+                    alert("No se encontro la informacion solicitada.");
+                }
+                else {
+                    alert("Error interno del sistema.");
+                }
+            });
+
+            $log.error("Parts Loaded: ", JSON.stringify(thisCtrl.partList));
+        };this.likes = function(){
+            // Get the list of parts from the servers via REST API
+
+            // First set up the url for the route
+            var url = "http://localhost:5000/PhotoMessagingApp/statistics/likes";
+
+            // Now set up the $http object
+            // It has two function call backs, one for success and one for error
+            $http.get(url).then(// success call back
+                function (response){
+                // The is the sucess function!
+                // Copy the list of parts in the data variable
+                // into the list of parts in the controller.
+
+                    console.log("response: " + JSON.stringify(response));
+
+                    thisCtrl.lperday = response.data.Messages;
+                    //$rootScope.prueba = "Proando";
             }, // error callback
             function (response){
                 // This is the error function
@@ -107,11 +156,11 @@ angular.module('PMAPP').controller('HomeController', ['$http', '$log', '$scope',
             $log.error("Parts Loaded: ", JSON.stringify(thisCtrl.partList));
         };
 
-        this.updateCount = function(){
+        this.dislikes = function(){
             // Get the list of parts from the servers via REST API
 
             // First set up the url for the route
-            var url = "http://localhost:5000/PhotoMessagingApp/statistics/nposts";
+            var url = "http://localhost:5000/PhotoMessagingApp/statistics/dislikes";
 
             // Now set up the $http object
             // It has two function call backs, one for success and one for error
@@ -123,8 +172,99 @@ angular.module('PMAPP').controller('HomeController', ['$http', '$log', '$scope',
 
                     console.log("response: " + JSON.stringify(response));
 
-                    thisCtrl.postCounter = response.data.Number;
-                    $rootScope.prueba = "Proando";
+                    thisCtrl.dperday = response.data.Messages;
+                    //$rootScope.prueba = "Proando";
+            }, // error callback
+            function (response){
+                // This is the error function
+                // If we get here, some error occurred.
+                // Verify which was the cause and show an alert.
+                console.log("Err response: " + JSON.stringify(response));
+
+                var status = response.status;
+                if (status == 0){
+                    alert("No hay conexion a Internet");
+                }
+                else if (status == 401){
+                    alert("Su sesion expiro. Conectese de nuevo.");
+                }
+                else if (status == 403){
+                    alert("No esta autorizado a usar el sistema.");
+                }
+                else if (status == 404){
+                    alert("No se encontro la informacion solicitada.");
+                }
+                else {
+                    alert("Error interno del sistema.");
+                }
+            });
+
+            $log.error("Parts Loaded: ", JSON.stringify(thisCtrl.partList));
+        };
+        this.rep = function(){
+            // Get the list of parts from the servers via REST API
+
+            // First set up the url for the route
+            var url = "http://localhost:5000/PhotoMessagingApp/statistics/replies";
+
+            // Now set up the $http object
+            // It has two function call backs, one for success and one for error
+            $http.get(url).then(// success call back
+                function (response){
+                // The is the sucess function!
+                // Copy the list of parts in the data variable
+                // into the list of parts in the controller.
+
+                    console.log("response: " + JSON.stringify(response));
+
+                    thisCtrl.rperday = response.data.Messages;
+                    //$rootScope.prueba = "Proando";
+            }, // error callback
+            function (response){
+                // This is the error function
+                // If we get here, some error occurred.
+                // Verify which was the cause and show an alert.
+                console.log("Err response: " + JSON.stringify(response));
+
+                var status = response.status;
+                if (status == 0){
+                    alert("No hay conexion a Internet");
+                }
+                else if (status == 401){
+                    alert("Su sesion expiro. Conectese de nuevo.");
+                }
+                else if (status == 403){
+                    alert("No esta autorizado a usar el sistema.");
+                }
+                else if (status == 404){
+                    alert("No se encontro la informacion solicitada.");
+                }
+                else {
+                    alert("Error interno del sistema.");
+                }
+            });
+
+            $log.error("Parts Loaded: ", JSON.stringify(thisCtrl.partList));
+        };
+
+        this.trending = function(){
+            // Get the list of parts from the servers via REST API
+
+            // First set up the url for the route
+            var url = "http://localhost:5000/PhotoMessagingApp/home/trendingHash";
+
+            // Now set up the $http object
+            // It has two function call backs, one for success and one for error
+            $http.get(url).then(// success call back
+                function (response){
+                // The is the sucess function!
+                // Copy the list of parts in the data variable
+                // into the list of parts in the controller.
+
+                    console.log("response: " + JSON.stringify(response));
+
+                    thisCtrl.hashtags = response.data.Messages;
+                   // $rootScope.prueba = "Proando";
             }, // error callback
             function (response){
                 // This is the error function
@@ -165,5 +305,9 @@ angular.module('PMAPP').controller('HomeController', ['$http', '$log', '$scope',
         };
         this.welcome();
 
-
+        this.trending();
+        this.stats();
+        this.likes();
+        this.dislikes();
+        this.rep();
 }]);

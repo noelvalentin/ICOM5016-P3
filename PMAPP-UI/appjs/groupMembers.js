@@ -52,6 +52,59 @@ angular.module('PMAPP').controller('GroupMembersController', ['$http', '$log', '
 
             $log.error("Users Loaded: ", JSON.stringify(thisCtrl.membersList));
         };
+
+        this.deleteMember = function(member){
+            // Get the target part id from the parameter in the url
+            // using the $routerParams object
+
+
+
+            // Now create the url with the route to talk with the rest API
+            var reqURL = "http://localhost:5000/PhotoMessagingApp/deleteMember/"+$routeParams.gid+"/"+member;
+            console.log("reqURL: " + reqURL);
+
+                        var config = {
+                        headers : {
+                        'Content-Type': 'application/json;charset=utf-8;'
+                    //'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+
+                                    }
+                                        }
+
+
+            // Now issue the http request to the rest API
+            $http.delete(reqURL,config).then(
+                // Success function
+                function (response) {
+                    console.log("data: " + JSON.stringify(response.data));
+                    // assing the part details to the variable in the controller
+                    console.log("Miembro borrado: " + $rootScope.prueba);
+                }, //Error function
+                function (response) {
+                    // This is the error function
+                    // If we get here, some error occurred.
+                    // Verify which was the cause and show an alert.
+                    var status = response.status;
+                    //console.log("Error: " + reqURL);
+                    //alert("Cristo");
+                    if (status == 0) {
+                        alert("No hay conexion a Internet");
+                    }
+                    else if (status == 401) {
+                        alert("Su sesion expiro. Conectese de nuevo.");
+                    }
+                    else if (status == 403) {
+                        alert("No esta autorizado a usar el sistema.");
+                    }
+                    else if (status == 404) {
+                        alert("No se encontro la informacion solicitada.");
+                    }
+                    else {
+                        alert("Error interno del sistema.");
+                    }
+                }
+            );
+        };
         this.partDetails = function (pid) {
             $location.url('/partsdetails/' + pid);
         };

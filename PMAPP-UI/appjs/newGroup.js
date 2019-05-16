@@ -64,7 +64,9 @@ angular.module('PMAPP').controller('NewGroupController', ['$http', '$log', '$sco
             $location.url('/chat');
         };
 
-
+        this.back= function(){
+            $location.url('/groups');
+        };
 
         this.showLikes =function(mid){
             $location.url('/likes/'+ mid);
