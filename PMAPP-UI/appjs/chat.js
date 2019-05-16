@@ -8,13 +8,21 @@ angular.module('PMAPP').controller('ChatController', ['$http', '$log', '$scope',
         this.point=0;
         this.dislikes=[];
         this.newText = "";
+         this.mbgList = [];
+
+        this.newText = "";
+        this.image="";
+        this.text="";
+        this.gid=null;
+        this.oid=$routeParams.oid;
 
 
-        this.loadMessages = function(){
+
+        this.loadMessages = function(oid){
             // Get the list of parts from the servers via REST API
 
             // First set up the url for the route
-            var url = "http://localhost:5000/PhotoMessagingApp/home/messages";
+            var url = "http://localhost:5000/PhotoMessagingApp/home/messages/replies/"+this.oid;
 
             // Now set up the $http object
             // It has two function call backs, one for success and one for error
@@ -55,18 +63,104 @@ angular.module('PMAPP').controller('ChatController', ['$http', '$log', '$scope',
                 }
             });
             for(let i=0; i<100;i++){
-        this.likes[i] = this.getLikes(i);
-        this.dislikes[i]=this.getDislikes(i);
+        //this.likes[i] = this.getLikes(i);
+        //this.dislikes[i]=this.getDislikes(i);
         }
             $log.error("Messages Loaded: ", JSON.stringify(thisCtrl.chatList));
         };
 
         this.postMsg = function(){
             var msg = thisCtrl.newText;
+
+            var tags={};
+
+           function getHashTags(inputText) {
+            var regex = /(?:^|\s)(?:#)([a-zA-Z\d]+)/gm;
+            var matches = [];
+            var match;
+
+            while ((match = regex.exec(inputText))) {
+                matches.push(match[1]);
+                }
+
+                    return matches
+}
+            // Need to figure out who I am
+            tags=getHashTags(this.text);
+           console.log(tags)
             // Need to figure out who I am
             var author = "Me";
-            var nextId = thisCtrl.counter++;
-            thisCtrl.messageList.unshift({"id": nextId, "text" : msg, "author" : author, "like" : 0, "nolike" : 0});
+            thisCtrl.mbgList.unshift({"id": window.person, "text" : msg, "author" : author, "like" : 0, "nolike" : 0});
+
+
+            // First set up the url for the route
+           var data = {};
+            data.image = this.image;
+            data.text = this.text;
+            data.uid  = window.person;
+            data.gid=null;
+            data.oid = $routeParams.oid;
+
+            // Now create the url with the route to talk with the rest API
+            var reqURL = "http://localhost:5000/PhotoMessagingApp/postToGroup";
+            console.log("reqURL: " + reqURL);
+
+            // configuration headers for HTTP request
+            var config = {
+                headers : {
+                    'Content-Type': 'application/json;charset=utf-8;'
+                    //'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+
+                }
+            }
+            // Now issue the http request to the rest API
+
+            $http.post(reqURL, data, config).then(
+                // Success function
+                function (response) {
+                    console.log("data: " + JSON.stringify(response.data));
+                    // tira un mensaje en un alert
+                    alert("Message Uploaded" );
+
+                    for( i in tags) {
+                        console.log(tags[i]);
+                       thisCtrl.hashtag(tags[i])
+                    }
+
+                    thisCtrl.mbgList.unshift({"date":"","first_name":"Me","image":"","mid": data.text,"text": data.text,"uid":window.person});
+                //$location.url('/messagesByGroup/'+ $routeParams.gid);
+                }, //Error function
+                function (response) {
+                    // This is the error function
+                    // If we get here, some error occurred.
+                    // Verify which was the cause and show an alert.
+                    var status = response.status;
+                    //console.log("Error: " + reqURL);
+                    //alert("Cristo");
+                    if (status == 0) {
+                        alert("No hay conexion a Internet");
+                    }
+                    else if (status == 401) {
+                        alert("Su sesion expiro. Conectese de nuevo.");
+                    }
+                    else if (status == 403) {
+                        alert("No esta autorizado a usar el sistema.");
+                    }
+                    else if (status == 404) {
+                        alert("No se encontro la informacion solicitada.");
+                    }
+                    else {
+                        alert("Error interno del sistema.");
+                    }
+                }
+            );
+
+            $log.error("Messages Loaded: ", JSON.stringify(thisCtrl.chatList))
+
+
+
+
+
             thisCtrl.newText = "";
         };
         this.viewChats = function(){
@@ -166,6 +260,59 @@ angular.module('PMAPP').controller('ChatController', ['$http', '$log', '$scope',
 
             $log.error("Messages Loaded: ", JSON.stringify(thisCtrl.chatList));
         };
+        this.hashtag = function(tag){
+            // Build the data object
+            var data = {};
+            data.tag = tag;
+
+
+            // Now create the url with the route to talk with the rest API
+            var reqURL = "http://localhost:5000/PhotoMessagingApp/createHashtag";
+            console.log("reqURL: " + reqURL);
+
+            // configuration headers for HTTP request
+            var config = {
+                headers : {
+                    'Content-Type': 'application/json;charset=utf-8;'
+                    //'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+
+                }
+            }
+            // Now issue the http request to the rest API
+
+            $http.post(reqURL, data, config).then(
+                // Success function
+                function (response) {
+                    console.log("data: " + JSON.stringify(response.data));
+                    // tira un mensaje en un alert
+                    console.log("success")
+
+                }, //Error function
+                function (response) {
+                    // This is the error function
+                    // If we get here, some error occurred.
+                    // Verify which was the cause and show an alert.
+                    var status = response.status;
+                    //console.log("Error: " + reqURL);
+                    //alert("Cristo");
+                    if (status == 0) {
+                        alert("No hay conexion a Internet");
+                    }
+                    else if (status == 401) {
+                        alert("Su sesion expiro. Conectese de nuevo.");
+                    }
+                    else if (status == 403) {
+                        alert("No esta autorizado a usar el sistema.");
+                    }
+                    else if (status == 404) {
+                        alert("No se encontro la informacion solicitada.");
+                    }
+                    else {
+                        alert("Error interno del sistema.");
+                    }
+                }
+            );
+        };
 
         this.showLikes =function(mid){
             $location.url('/likes/'+ mid);
@@ -174,7 +321,7 @@ angular.module('PMAPP').controller('ChatController', ['$http', '$log', '$scope',
             $location.url('/dislikes/'+mid);
         };
 
-        this.loadMessages();
+        this.loadMessages($routeParams.oid);
 
         //this.getLikes();
 
