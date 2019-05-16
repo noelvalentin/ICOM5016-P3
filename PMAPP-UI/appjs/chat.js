@@ -16,6 +16,9 @@ angular.module('PMAPP').controller('ChatController', ['$http', '$log', '$scope',
         this.gid=null;
         this.oid=$routeParams.oid;
 
+        this.dislikes=[];
+        this.replies=[];
+
 
 
         this.loadMessages = function(oid){
@@ -63,8 +66,9 @@ angular.module('PMAPP').controller('ChatController', ['$http', '$log', '$scope',
                 }
             });
             for(let i=0; i<100;i++){
-        //this.likes[i] = this.getLikes(i);
-        //this.dislikes[i]=this.getDislikes(i);
+        this.likes[i] = this.getLikes(i);
+        this.dislikes[i]=this.getDislikes(i);
+      //  this.replies[i]=this.numReplies(i);
         }
             $log.error("Messages Loaded: ", JSON.stringify(thisCtrl.chatList));
         };
@@ -163,10 +167,8 @@ angular.module('PMAPP').controller('ChatController', ['$http', '$log', '$scope',
 
             thisCtrl.newText = "";
         };
-        this.viewChats = function(){
-            $location.url('/chat');
-        };
-        this.getLikes =function(value){
+
+         this.getLikes =function(value){
             var mid = value;
 
 
@@ -260,6 +262,178 @@ angular.module('PMAPP').controller('ChatController', ['$http', '$log', '$scope',
 
             $log.error("Messages Loaded: ", JSON.stringify(thisCtrl.chatList));
         };
+        this.numReplies =function(value){
+            var mid = value;
+
+
+
+            var url2 = "http://localhost:5000/PhotoMessagingApp/numReplies/"+mid+"";
+
+
+            // Now set up the $http object
+            // It has two function call backs, one for success and one for error
+            $http.get(url2).then(// success call back
+                function (response){
+                // The is the sucess function!
+                // Copy the list of parts in the data variable
+                // into the list of parts in the controller.
+
+                    console.log("response: " + JSON.stringify(response));
+
+                    thisCtrl.replies[mid] = response.data.Dislikes;
+                    $rootScope.prueba = "Probando";
+            }, // error callback
+            function (response){
+                // This is the error function
+                // If we get here, some error occurred.
+                // Verify which was the cause and show an alert.
+                console.log("Err response: " + JSON.stringify(response));
+
+                var status = response.status;
+                if (status == 0){
+                    alert("No hay conexion a Internet");
+                }
+                else if (status == 401){
+                    alert("Su sesion expiro. Conectese de nuevo.");
+                }
+                else if (status == 403){
+                    alert("No esta autorizado a usar el sistema.");
+                }
+                else if (status == 404){
+                    alert("No se encontro la informacion solicitada.");
+                }
+                else {
+                    alert("Error interno del sistema.");
+                }
+            });
+
+            $log.error("Messages Loaded: ", JSON.stringify(thisCtrl.chatList));
+        };
+
+        this.like = function(mid){
+            // Need to figure out who I am
+
+            // First set up the url for the route
+           var data = {};
+
+            data.uid=window.person;
+            data.mid = mid;
+
+            // Now create the url with the route to talk with the rest API
+            var reqURL = "http://localhost:5000/PhotoMessagingApp/likeMessage";
+            console.log("reqURL: " + reqURL);
+
+            // configuration headers for HTTP request
+            var config = {
+                headers : {
+                    'Content-Type': 'application/json;charset=utf-8;'
+                    //'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+
+                }
+            }
+            // Now issue the http request to the rest API
+
+            $http.post(reqURL, data, config).then(
+                // Success function
+                function (response) {
+                    console.log("data: " + JSON.stringify(response.data));
+                    // tira un mensaje en un alert
+                    alert("Message Liked" );
+                //$location.url('/messagesByGroup/'+ $routeParams.gid);
+                }, //Error function
+                function (response) {
+                    // This is the error function
+                    // If we get here, some error occurred.
+                    // Verify which was the cause and show an alert.
+                    var status = response.status;
+                    //console.log("Error: " + reqURL);
+                    //alert("Cristo");
+                    if (status == 0) {
+                        alert("No hay conexion a Internet");
+                    }
+                    else if (status == 401) {
+                        alert("Su sesion expiro. Conectese de nuevo.");
+                    }
+                    else if (status == 403) {
+                        alert("No esta autorizado a usar el sistema.");
+                    }
+                    else if (status == 404) {
+                        alert("No se encontro la informacion solicitada.");
+                    }
+                    else {
+                        alert("Error interno del sistema.");
+                    }
+                }
+            );
+
+            $log.error("Messages Liked: ");
+
+
+
+
+        };
+        this.dislike = function(mid){
+            // Need to figure out who I am
+
+            // First set up the url for the route
+           var data = {};
+
+            data.uid=window.person;
+            data.mid = mid;
+
+            // Now create the url with the route to talk with the rest API
+            var reqURL = "http://localhost:5000/PhotoMessagingApp/dislikeMessage";
+            console.log("reqURL: " + reqURL);
+
+            // configuration headers for HTTP request
+            var config = {
+                headers : {
+                    'Content-Type': 'application/json;charset=utf-8;'
+                    //'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+
+                }
+            }
+            // Now issue the http request to the rest API
+
+            $http.post(reqURL, data, config).then(
+                // Success function
+                function (response) {
+                    console.log("data: " + JSON.stringify(response.data));
+                    // tira un mensaje en un alert
+                    alert("Message Disliked" );
+                //$location.url('/messagesByGroup/'+ $routeParams.gid);
+                }, //Error function
+                function (response) {
+                    // This is the error function
+                    // If we get here, some error occurred.
+                    // Verify which was the cause and show an alert.
+                    var status = response.status;
+                    //console.log("Error: " + reqURL);
+                    //alert("Cristo");
+                    if (status == 0) {
+                        alert("No hay conexion a Internet");
+                    }
+                    else if (status == 401) {
+                        alert("Su sesion expiro. Conectese de nuevo.");
+                    }
+                    else if (status == 403) {
+                        alert("No esta autorizado a usar el sistema.");
+                    }
+                    else if (status == 404) {
+                        alert("No se encontro la informacion solicitada.");
+                    }
+                    else {
+                        alert("Error interno del sistema.");
+                    }
+                }
+            );
+
+            $log.error("Messages Liked: ");
+
+
+
+
+        };
         this.hashtag = function(tag){
             // Build the data object
             var data = {};
@@ -314,15 +488,23 @@ angular.module('PMAPP').controller('ChatController', ['$http', '$log', '$scope',
             );
         };
 
-        this.showLikes =function(mid){
-            $location.url('/likes/'+ mid);
+        this.viewReplies = function(oid){
+            $location.url('/chat/'+oid);
         };
-        this.showDislikes =function(mid){
-            $location.url('/dislikes/'+mid);
+        this.showdetails =function(){
+            $location.url('/postDetails');
         };
 
-        this.loadMessages($routeParams.oid);
+        this.showLikes= function(mid){
+              $location.url('/likes/'+mid);
+        };
 
-        //this.getLikes();
+        this.showDislikes= function(mid){
+              $location.url('/dislikes/'+mid);
+        };
 
+
+
+        this.loadMessages();
 }]);
+
