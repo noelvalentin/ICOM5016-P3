@@ -28,7 +28,7 @@ angular.module('PMAPP').controller('DislikesController', ['$http', '$log', '$sco
 
                     thisCtrl.mDislikes = response.data.Dislikers;
                     $rootScope.prueba = "Probando";
-            }, // error callback
+            }, // error callback 
             function (response){
                 // This is the error function
                 // If we get here, some error occurred.
