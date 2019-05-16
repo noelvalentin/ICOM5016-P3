@@ -78,7 +78,7 @@ class MessagesDAO:
 
     def getTrendingTopics(self):
         cursor = self.conn.cursor()
-        query = "select  tag ,count(tag) from Hashtag group by tag order by count desc limit 5"
+        query = "select  tag ,count(*) as C from Hashtag natural inner join Tagged group by tag order by C desc limit 5"
         cursor.execute(query)
         result = []
         for row in cursor:
