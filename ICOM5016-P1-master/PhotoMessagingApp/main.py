@@ -2,7 +2,6 @@ from flask import Flask, jsonify, request
 from handler.users import UserHandler
 from handler.groups import GroupHandler
 from handler.messages import MessageHandler
-from handler.replies import ReplyHandler
 
 # Import Cross-Origin Resource Sharing to enable services on other ports on this machine or on other machines to access this app
 from flask_cors import CORS, cross_origin
