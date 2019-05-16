@@ -11,7 +11,7 @@ angular.module('PMAPP').controller('MessagesByGroupController', ['$http', '$log'
         this.oid=null;
         this.likes=[];
         this.dislikes=[];
-
+        this.replies=[];
 
            this.loadMessages = function(){
             // Get the list of parts from the servers via REST API
@@ -58,6 +58,7 @@ angular.module('PMAPP').controller('MessagesByGroupController', ['$http', '$log'
              for(let i=0; i<100;i++){
         this.likes[i] = this.getLikes(i);
         this.dislikes[i]=this.getDislikes(i);
+        this.replies[i]=this.numReplies(i);
         }
 
             $log.error("Messages Loaded: ", JSON.stringify(thisCtrl.chatList));
@@ -222,6 +223,53 @@ angular.module('PMAPP').controller('MessagesByGroupController', ['$http', '$log'
                     console.log("response: " + JSON.stringify(response));
 
                     thisCtrl.dislikes[mid] = response.data.Dislikes;
+                    $rootScope.prueba = "Probando";
+            }, // error callback
+            function (response){
+                // This is the error function
+                // If we get here, some error occurred.
+                // Verify which was the cause and show an alert.
+                console.log("Err response: " + JSON.stringify(response));
+
+                var status = response.status;
+                if (status == 0){
+                    alert("No hay conexion a Internet");
+                }
+                else if (status == 401){
+                    alert("Su sesion expiro. Conectese de nuevo.");
+                }
+                else if (status == 403){
+                    alert("No esta autorizado a usar el sistema.");
+                }
+                else if (status == 404){
+                    alert("No se encontro la informacion solicitada.");
+                }
+                else {
+                    alert("Error interno del sistema.");
+                }
+            });
+
+            $log.error("Messages Loaded: ", JSON.stringify(thisCtrl.chatList));
+        };
+        this.numReplies =function(value){
+            var mid = value;
+
+
+
+            var url2 = "http://localhost:5000/PhotoMessagingApp/numReplies/"+mid+"";
+
+
+            // Now set up the $http object
+            // It has two function call backs, one for success and one for error
+            $http.get(url2).then(// success call back
+                function (response){
+                // The is the sucess function!
+                // Copy the list of parts in the data variable
+                // into the list of parts in the controller.
+
+                    console.log("response: " + JSON.stringify(response));
+
+                    thisCtrl.replies[mid] = response.data.Dislikes;
                     $rootScope.prueba = "Probando";
             }, // error callback
             function (response){
