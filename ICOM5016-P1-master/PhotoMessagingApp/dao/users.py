@@ -1,10 +1,12 @@
 import psycopg2
 
+
 class UsersDAO:
 
     def __init__(self):
-        connection_url = "dbname=mydb user=yo host=localhost password=password"
+        connection_url = "dbname=jeanmerced user=postgres password=password"
         self.conn = psycopg2._connect(connection_url)
+
 
 #--------------- Phase 2 ---------------#
 
@@ -91,57 +93,40 @@ class UsersDAO:
         result = cursor.fetchone()
         return result
 
-    def login(self, email,password):
+    def login(self, email, password):
         cursor = self.conn.cursor()
         query = "select uid  from Users  Where email = %s and password= %s"
         cursor.execute(query, (email, password,))
         result = cursor.fetchone()
         return result
-'''
-    def login(self):
-        result= "Welcome"
+
+    def addUserByEmail(self, uid, first_name, last_name, email):
+        cursor = self.conn.cursor()
+        query = "insert into ContactList(uid,cid) values(%s,(select uid from Users where first_name=%s and last_name=%s and email=%s)) returning uid;"
+        cursor.execute(query, (uid, first_name, last_name, email))
+        result = cursor.fetchone()[0]
+        self.conn.commit()
         return result
 
-    
-
-    def getUserByLastName(self, lastName):
-        result = []
-        if lastName == "Rodriguez":
-            result = [1, "Manuel", "Rodriguez", 939, "gmail", "qwerty"]
-        elif lastName == "Apellido":
-            result = [0, "Fulano", "Apellido", 787, "hotmail", "password123"]
+    def addUserByPhone(self, uid, first_name, last_name, phone):
+        cursor = self.conn.cursor()
+        query = "insert into ContactList(uid,cid) values(%s,(select uid from Users where first_name=%s and last_name=%s and phone=%s)) returning uid;"
+        cursor.execute(query, (uid, first_name, last_name, phone))
+        result = cursor.fetchone()[0]
+        self.conn.commit()
         return result
 
-    def getUserByPhone(self, phone):
-        result = []
-        if phone == 939:
-            result = [1, "Manuel", "Rodriguez", 939, "gmail", "qwerty"]
-        elif phone == 787:
-            result = [0, "Fulano", "Apellido", 787, "hotmail", "password123"]
-        return result
+    def deleteContact(self, uid, cid):
+        cursor = self.conn.cursor()
+        query = "delete from ContactList  where uid = %s and cid=%s;"
+        cursor.execute(query, (uid, cid))
+        self.conn.commit()
+        return cid
 
-    def getUserByEmail(self, email):
-        result = []
-        if email == "gmail":
-            result = [1, "Manuel", "Rodriguez", 939, "gmail", "qwerty"]
-        elif email == "hotmail":
-            result = [0, "Fulano", "Apellido", 787, "hotmail", "password123"]
-        return result
+    def getContact(self, uid, cid):
+        cursor = self.conn.cursor()
+        query = "select cid from ContactList  where uid = %s and cid=%s;"
+        cursor.execute(query, (uid, cid))
+        self.conn.commit()
+        return cid
 
-    def getUserGroupsById(self, uid):
-        result = []
-        return result
-'''
-
-'''
-    def deleteUser(self, uid):
-        result="USER DESTROYED"
-        return result
-
-    def updateUser(self, uid):
-        result= "User %d information has been updated" %(uid)
-        return result
-    def createUser(self):
-        result="User created,please check yur email to verify"
-        return result
-'''
