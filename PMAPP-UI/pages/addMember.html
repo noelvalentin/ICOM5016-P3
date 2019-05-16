@@ -1,5 +1,5 @@
 
- <center><h1>Contacts List</h1></center>
+ <center><h1>Add Member from your List</h1></center>
 
          <a class="waves-effect  green lighten-1 btn" ng-click="contactsCtrl.addContact()" >Add Contacts</a>
 
@@ -9,7 +9,7 @@
     <!--<div  id="chat-list" style="height:300px;overflow:auto">-->
     <div>
         <!-- Here come the messages in the chat, each one presented in card -->
-        <div ng-repeat="m in contactsCtrl.contactsList">
+        <div ng-repeat="m in addMemberCtrl.contactsList">
             <!-- This card prodives space for the message and Like/dislike buttons -->
             <div class="row">
                 <div class="col s12 m6">
@@ -22,11 +22,10 @@
                               {{m.first_name}}  {{m.last_name}}
                             </p>
                             <p align="right">
-                            <a class="btn-floating btn-small waves-effect waves-light green" ng-click="contactsCtrl.userDetails(m.uid)"><i class="material-icons">info
+                            <a class="btn-floating btn-small waves-effect waves-light green" ng-click="addMemberCtrl.addMember(m.uid)"><i class="material-icons">add
                             </i></a>
 
-                            <a class="btn-floating btn-small waves-effect waves-light red" ng-click="contactsCtrl.deleteContact(m.uid)"><i class="material-icons">delete
-                            </i></a>
+
 
 
 

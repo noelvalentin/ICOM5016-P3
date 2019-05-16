@@ -11,26 +11,23 @@
                         <tbody>
                             <tr>
                                 <th> First Name </th>
-                                <th><input type="text" ng-model="newGroupCtrl.gname"></th>
+                                <th><input type="text" ng-model="addContactCtrl.first_name"></th>
                             </tr>
                         <tr>
                                 <th> Last Name: </th>
-                                <th><input type="text" ng-model="newGroupCtrl.gname"></th>
-                            </tr>
+                                <th><input type="text" ng-model="addContactCtrl.last_name"></th>
+                        </tr>
 
                         <tr>
 
-
                                 <th> option: </th>
-
-                                <th>
-                                    <input type="text" ng-model="newGroupCtrl.gname"></th>
-                            </tr>
+                                <th><input type="text" ng-model="addContactCtrl.target"></th>
+                        </tr>
 
                         </tbody>
 
                     </table>
-                    <select class="browser-default">
+                    <select id="s" class="browser-default">
     <option value="email">Email</option>
     <option value="phone">Phone</option>
   </select>
@@ -40,7 +37,7 @@
                 <div class="card-action">
 
                     &nbsp; &nbsp;
-                    <a class="waves-effect  red lighten-1 btn-small" ng-click="newGroupCtrl.createGroup()">Create</a>
+                    <a class="waves-effect  red lighten-1 btn-small" ng-click="addContactCtrl.addContact()">Create</a>
 
                      <a class="waves-effect  grey btn-small" href="#/groups.html">Exit</a>
                 </div>

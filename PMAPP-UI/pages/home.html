@@ -8,7 +8,7 @@
      <ul>
          <center><a class="waves-effect  blue lighten-1 btn-small" ng-click="homeCtrl.viewGroups()">Groups</a>
          <a class="waves-effect  blue lighten-1 btn-small" ng-click="homeCtrl.userContacts()">Contacts</a>
-         <a class="waves-effect  blue lighten-1 btn-small" ng-click="homeCtrl.viewChats()">Messages</a></center>
+         <!--a class="waves-effect  blue lighten-1 btn-small" ng-click="homeCtrl.viewChats()">Messages</a--></center>
 
      </ul>
 
@@ -34,6 +34,7 @@
 
                                 TRENDING TOPICS:
                             </p>
+                            <div ng-repeat="h in homeCtrl.hashtags"><p> #{{h.tag}} -----> amount:{{h.count}}</p> </div>
 
 
 
@@ -58,8 +59,37 @@
                             <!-- Here comes the message text -->
                             <p>
 
-                                TOTAL POSTS PER DAY: {{homeCtrl.postCounter.number_of_reactions}}
+                                TOTAL POSTS PER DAY:
+
                             </p>
+                            <div ng-repeat="h in homeCtrl.stats"><p> Date:{{h.date}} -----> amount:{{h.count}}</p> </div>
+
+                            <br>
+
+                             <p>
+
+                                NUMBER OF LIKES PER DAY:
+
+                            </p>
+                            <div ng-repeat="h in homeCtrl.lperday"><p> Date:{{h.date}} -----> amount:{{h.count}}</p> </div>
+
+                            <br>
+                             <p>
+
+                                NUMBER OF DISLIKES PER DAY:
+
+                            </p>
+                            <div ng-repeat="h in homeCtrl.dperday"><p> Date:{{h.date}} -----> amount:{{h.count}}</p> </div>
+
+                            <br>
+
+                             <p>
+
+                                NUMBER OF REPLIES PER DAY:
+
+                            </p>
+                            <div ng-repeat="h in homeCtrl.rperday"><p> Date:{{h.date}} -----> amount:{{h.count}}</p> </div>
+
                              <!--p ng-repeat="t in homeCtrl."-->
 
 
