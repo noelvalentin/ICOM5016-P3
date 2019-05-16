@@ -1,10 +1,12 @@
 import psycopg2
 
+
 class GroupsDAO:
 
     def __init__(self):
-        connection_url = "dbname=mydb user=yo host=localhost password=password"
+        connection_url = "dbname=jeanmerced user=postgres password=password"
         self.conn = psycopg2._connect(connection_url)
+
 
 #--------------- Phase 2 ---------------#
 
@@ -22,50 +24,52 @@ class GroupsDAO:
     def createGroup(self, gname, ownerID):
         cursor = self.conn.cursor()
         query = "insert into ChatGroup(gname, uid) values (%s, %s) returning gid;"
+        query2 = "insert into isMember (uid,gid) values( %s,(select gid from chatGroup where gname=%s))"
         cursor.execute(query, (gname, ownerID,))
-        gid = cursor.fetchone()[0]
+        cursor.execute(query2, (ownerID, gname))
+        #gid = cursor.fetchone()[0]
         self.conn.commit()
-        return gid
+        return 0
 
-'''
-    def getGroupById(self, gid):
-        result=[]
-        if gid==30:
-            result=[30,"Avengers","Steve Rogers"]
-
-        elif gid==11:
-            result=[11,"Los Extraterrestres","Wisin y Yandel"]
-        elif gid== 9:
-            result=[9,"All-Stars","Fulanito"]
-
+    def postToGroup(self, image, text, uid, gid, oid):
+        cursor = self.conn.cursor()
+        query = "insert into Message(image, text, date, uid,gid,oid) values(%s,%s,current_date,%s,%s,%s) returning uid;"
+        cursor.execute(query, (image, text, uid, gid, oid))
+        result = cursor.fetchone()[0]
+        self.conn.commit()
         return result
 
-    def getGroupByGroupName(self, gname):
-        result=[]
-        if gname=="Avengers":
-            result = [[30, "Avengers", "Steve Rogers"]]
-        elif gname=="Los Extraterrestres":
-            result=[[11,"Los Extraterrestres","Wisin y Yandel"]]
-        elif gname=="All-Stars":
-            result=[[9,"All-Stars","Fulanito"]]
-
+    def getMyGroups(self, uid):
+        cursor = self.conn.cursor()
+        query = "select uid,gid,gname,first_name from chatGroup natural inner join ((select   gid  from isMember where uid=%s)) as tabla natural inner join Users;"
+        cursor.execute(query, (uid,))
+        result = []
+        for row in cursor:
+            result.append(row)
         return result
 
-    def getAllGroupsByOwnerID(self, ownerID):
-        result = [[10,"Basket"],[12,"Playa Sabado"]]
-        return result
-'''
-
-'''
-    def createGroup(self):
-        result = "Group Succesfully Created."
-        return result
+    def deleteMember(self, gid, uid):
+        cursor = self.conn.cursor()
+        query = "delete from isMember  where gid = %s and uid=%s;"
+        cursor.execute(query, (gid, uid))
+        self.conn.commit()
+        return uid
 
     def deleteGroup(self, gid):
-        result = "the group %d has been deleted" %(gid)
-        return result
+        cursor = self.conn.cursor()
+        query = "delete from isMember  where gid = %s;"
+        query2 = "delete from Message where gid=%s;"
+        query3 = "delete from ChatGroup where gid=%s;"
+        cursor.execute(query, (gid,))
+        cursor.execute(query2, (gid,))
+        cursor.execute(query3, (gid,))
+        self.conn.commit()
+        return 0
 
-    def updateGroup(self, gid):
-        result = "the group %d has been updated" %(gid)
-        return result
-'''
+    def addMember(self, uid, gid):
+        cursor = self.conn.cursor()
+        query = "insert into isMember (uid, gid) values (%s, %s);"
+        cursor.execute(query, (uid, gid))
+        self.conn.commit()
+        return uid
+
