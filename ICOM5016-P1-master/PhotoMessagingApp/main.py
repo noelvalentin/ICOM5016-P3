@@ -1,7 +1,7 @@
 from flask import Flask, request
-from src.handler.users import UserHandler
-from src.handler.groups import GroupHandler
-from src.handler.messages import MessageHandler
+from handler.users import UserHandler
+from handler.groups import GroupHandler
+from handler.messages import MessageHandler
 
 
 # Import Cross-Origin Resource Sharing to enable services on other ports
