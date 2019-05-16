@@ -54,9 +54,9 @@
                             </i></a>
 
                             <a class="btn-floating btn-small waves-effect waves-light red" ng-click="mbgCtrl.showDislikes(m.mid)"><i class="material-icons">more_horiz</i></a>
-                            <button class="btn waves-effect waves-light "  ng-click="mbgCtrl.viewReplies(m.mid,m.gid)">View Replies
+                            <button class="btn waves-effect waves-light "  ng-click="mbgCtrl.viewReplies(m.mid,m.gid)">View Replies  {{mbgCtrl.replies[m.mid].number_of_reactions}}
                     <i class="material-icons right">chevron_right</i>
-                    </button>
+                    </button> <p> </p>
                         </div>
                     </div>
                 </div>
