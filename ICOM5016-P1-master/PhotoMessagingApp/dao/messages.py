@@ -3,7 +3,7 @@ import psycopg2
 class MessagesDAO:
 
     def __init__(self):
-        connection_url = "dbname=mydb user=yo host=localhost password=password"
+        connection_url = "dbname=mydb user=postgres password=password"
         self.conn = psycopg2._connect(connection_url)
 
 #--------------- Phase 2 ---------------#
