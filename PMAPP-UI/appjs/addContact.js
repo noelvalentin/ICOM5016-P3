@@ -3,18 +3,48 @@ angular.module('PMAPP').controller('AddContactController', ['$http', '$log', '$s
         var thisCtrl = this;
 
 
-        this.gname = "";
-        this.ownerID= window.person;
+        this.first_name = "";
+        this.last_name="";
+        this.target ="";
+        this.uid = window.person;
 
-       this.createGroup = function(){
+
+       this.addContact = function(){
             // Build the data object
+           var sel = document.getElementById('s');
             var data = {};
+            data.uid = this.uid;
+            data.first_name  = this.first_name;
+            data.last_name= this.last_name;
 
-            data.gname  = this.gname;
-            data.ownerID= this.ownerID;
 
+             function getSelectedOption(sel) {
+        var opt;
+        for ( var i = 0, len = sel.options.length; i < len; i++ ) {
+            opt = sel.options[i];
+            if ( opt.selected === true ) {
+                break;
+            }
+        }
+        return opt.value;}
+
+        var x = getSelectedOption(sel);
+             console.log(x);
+
+            if(x == "email"){
             // Now create the url with the route to talk with the rest API
-            var reqURL = "http://localhost:5000/PhotoMessagingApp/group/create";
+                //If email is the option use this route.
+                data.email = this.target;
+
+                 var reqURL = "http://localhost:5000/PhotoMessagingApp/addByEmail";}
+
+            else {
+
+                data.phone = this.target;
+
+                var reqURL = "http://localhost:5000/PhotoMessagingApp/addByPhone";
+
+            }
             console.log("reqURL: " + reqURL);
 
             // configuration headers for HTTP request
@@ -32,8 +62,9 @@ angular.module('PMAPP').controller('AddContactController', ['$http', '$log', '$s
                 function (response) {
                     console.log("data: " + JSON.stringify(response.data));
                     // tira un mensaje en un alert
-                   alert("New Group Created: " + response.data.Groups);
-                    $location.url('/groups');
+                   alert("User Added To Contact List " );
+                   $location.url('/contacts/' + window.person);
+
                 }, //Error function
                 function (response) {
                     // This is the error function
