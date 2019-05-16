@@ -85,7 +85,7 @@ angular.module('PMAPP').controller('AddMemberController', ['$http', '$log', '$sc
                     console.log("data: " + JSON.stringify(response.data));
                     // tira un mensaje en un alert
                     alert("Usuario agregado al grupo ");
-                    $location.url('/users');
+                    $location.url('/home');
                 }, //Error function
                 function (response) {
                     // This is the error function
